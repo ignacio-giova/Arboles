@@ -6,14 +6,20 @@ typedef struct _TNodo{
     struct _TNodo *izq, *der;
 } TNodo;
 
-TNodo * crearArbol(int dato){
+TNodo * crearArbol(int nivel){
+    if (nivel <= 0) {
+        return NULL;
+    }
+
     TNodo *nuevoArbol = malloc (sizeof(TNodo));
     if (nuevoArbol == NULL)
         return NULL;
 
-    nuevoArbol->dato = dato;
     nuevoArbol->izq = NULL;
     nuevoArbol->der = NULL;
+    
+    nuevoArbol->izq = crearArbol(nivel - 1);
+    nuevoArbol->der = crearArbol(nivel - 1);
 
     return nuevoArbol;
 }
@@ -26,19 +32,6 @@ void liberarArbol(TNodo *arbol) {
     liberarArbol(arbol->izq);
     liberarArbol(arbol->der);
     free(arbol);
-}
-
-void mirror(TNodo *arbol){
-    if(arbol->izq == NULL && arbol->der == NULL) return;
-
-    TNodo *aux;
-
-    aux = arbol->izq;
-    arbol->izq = arbol->der;
-    arbol->der = aux;
-
-    mirror(arbol->izq);
-    mirror(arbol->der);
 }
 
 void imprimirArbolEsquematico(TNodo *raiz, int nivel) {
@@ -71,8 +64,6 @@ int main(){
     miArbol->der->izq = crearArbol(6);
     miArbol->der->der = crearArbol(7);
     
-    mirror(miArbol);
-    imprimirArbolEsquematico(miArbol, 0);
 
     liberarArbol(miArbol);
 }
