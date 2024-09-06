@@ -18,30 +18,6 @@ TNodo * crearArbol(int dato){
     return nuevoArbol;
 }
 
-int sumarArbol (TNodo *arbol){
-    if (arbol == NULL)
-        return 0;
-    
-    return arbol->dato + sumarArbol(arbol->izq) + sumarArbol(arbol->der);
-}
-
-int cantNodos (TNodo *arbol){
-    if (arbol == NULL)
-        return 0;
-    
-    return 1 + cantNodos(arbol->izq) + cantNodos(arbol->der);
-}
-
-int max(int a, int b) {
-    return (a > b) ? a : b;
-}
-
-int altura (TNodo *arbol){
-    if (arbol == NULL)
-        return 0;
-
-    return 1 + max(altura(arbol->izq), altura(arbol->der));
-}
 
 void liberarArbol(TNodo *arbol) {
     if (arbol == NULL)
@@ -50,6 +26,16 @@ void liberarArbol(TNodo *arbol) {
     liberarArbol(arbol->izq);
     liberarArbol(arbol->der);
     free(arbol);
+}
+
+void mirror(TNodo *arbol){
+    int *aux;
+
+    aux = arbol->izq;
+    arbol->izq = arbol->der;
+    arbol->der = aux;
+
+    //FALTA RECURSIVA
 }
 
 int main(){
@@ -64,10 +50,6 @@ int main(){
     miArbol->der->izq = crearArbol(6);
     miArbol->der->der = crearArbol(7);
     
-    printf("\nLa suma del arbol es: %i", sumarArbol(miArbol));
-    printf("\nLos nodos del arbol son: %i", cantNodos(miArbol));
-    printf("\nLa altura del arbol es: %i", altura(miArbol));
-
 
 
     liberarArbol(miArbol);
